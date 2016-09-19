@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from edgeExceptions import NullExtremityEdge, IllegalEdge
+
 class Edge(object):
     """
     Une classe generique pour representer une arête d'un graph.
@@ -8,10 +10,14 @@ class Edge(object):
     """
 
     def __init__(self, start, end, weight):
+        # Gestion des cas particuliers.
         if start == end and weight == 0:
-            raise "Edge with same start and end and with a null weight : illegal"
-        if not start or not end:
-            raise "One of the extremity is equal to None"
+            raise IllegalEdge()
+        if not start:
+            raise NullExtremityEdge(start=True)
+        if not end:
+            raise NullExtremityEdge(start=False)
+
         self.__start = start
         self.__end = end
         self.__weight = weight
@@ -29,7 +35,8 @@ class Edge(object):
         return self.__weight
 
     def __repr__(self):
-        return 'Arête ' + str(self.__start.get_id()) + '->' + str(self.__end.get_id()) + ' Poids=' + str(self.__weight)
+        return 'Arête ' + str(self.get_start().get_id()) + '->' + \
+               str(self.get_end().get_id()) + ' Poids=' + str(self.get_weight())
 
 if __name__ == '__main__':
 
@@ -48,3 +55,45 @@ if __name__ == '__main__':
 
     for edge in edges:
         print edge
+
+    # Test des cas particuliers
+    catched = False
+
+    def checkCatched(bool):
+        if bool:
+            print 'OK'
+        else:
+            print 'FAILED'
+
+    print '\n---------------'
+    try:
+        print "Test start = None :",
+        aux = Edge(None, nodes[0], 3)
+    except NullExtremityEdge as e:
+        catched = (e.start == True)
+    except Exception as e:
+        catched = False
+
+    checkCatched(catched)
+    catched = False
+
+    try:
+        print "Test end = None :",
+        aux = Edge(nodes[0], None, 3)
+    except NullExtremityEdge as e:
+        catched = (e.start == False)
+    except Exception as e:
+        catched = False
+
+    checkCatched(catched)
+    catched = False
+
+    try:
+        print "Test start = end et weight = 0 :",
+        aux = Edge(nodes[0], nodes[0], 0)
+    except IllegalEdge as e:
+        catched = True
+    except Exception as e:
+        catched = False
+
+    checkCatched(catched)
