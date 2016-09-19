@@ -56,7 +56,8 @@ if __name__ == '__main__':
     for edge in edges:
         print edge
 
-    # Test des cas particuliers
+    # ---------------------------------------------
+    #  Test des cas particuliers
     catched = False
 
     def checkCatched(bool):
