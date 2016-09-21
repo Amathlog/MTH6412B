@@ -13,9 +13,9 @@ class Edge(object):
         # Gestion des cas particuliers.
         if start == end and weight == 0:
             raise IllegalEdge()
-        if not start:
+        if start is None:
             raise NullExtremityEdge(start=True)
-        if not end:
+        if end is None:
             raise NullExtremityEdge(start=False)
 
         self.__start = start
