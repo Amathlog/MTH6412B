@@ -15,6 +15,7 @@ class Edge(object):
             raise NullExtremityEdge(start=True)
         if end is None:
             raise NullExtremityEdge(start=False)
+        if start.get_id() == end.get_id() and weight == 0:
             raise IllegalEdge()
 
         self.__start = start
