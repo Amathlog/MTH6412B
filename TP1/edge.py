@@ -11,12 +11,11 @@ class Edge(object):
 
     def __init__(self, start, end, weight):
         # Gestion des cas particuliers.
-        if start == end and weight == 0:
-            raise IllegalEdge()
         if start is None:
             raise NullExtremityEdge(start=True)
         if end is None:
             raise NullExtremityEdge(start=False)
+            raise IllegalEdge()
 
         self.__start = start
         self.__end = end
@@ -73,6 +72,8 @@ if __name__ == '__main__':
     except NullExtremityEdge as e:
         catched = (e.start == True)
     except Exception as e:
+        # Attrape n'importe quelle autre exception
+        # Mais ce n'est pas celle qu'on attend
         catched = False
 
     checkCatched(catched)
@@ -84,6 +85,8 @@ if __name__ == '__main__':
     except NullExtremityEdge as e:
         catched = (e.start == False)
     except Exception as e:
+        # Attrape n'importe quelle autre exception
+        # Mais ce n'est pas celle qu'on attend
         catched = False
 
     checkCatched(catched)
@@ -95,6 +98,8 @@ if __name__ == '__main__':
     except IllegalEdge as e:
         catched = True
     except Exception as e:
+        # Attrape n'importe quelle autre exception
+        # Mais ce n'est pas celle qu'on attend
         catched = False
 
     checkCatched(catched)

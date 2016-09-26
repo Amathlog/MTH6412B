@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
         for i in range(dim):
             for pair in edge_list[i]:
-                if pair[1] == 0:
+                if i == pair[0] and pair[1] == 0:
                     continue
                 g.add_edge(edge.Edge(g.get_nodes()[i], g.get_nodes()[pair[0]], pair[1]))
 
