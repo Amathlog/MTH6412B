@@ -47,7 +47,7 @@ with open(finstance, "r") as fd:
                 continue
             g.add_edge(Edge(g.get_nodes()[i], g.get_nodes()[pair[0]], pair[1]))
 
-    g.create_adj_matrix()
+    #g.create_adj_matrix()
 
     # print g
     # print g.get_adj_matrix()

@@ -40,10 +40,10 @@ for d in nodes:
 for e in edges:
     g.add_edge(Edge(g.get_nodes()[e[0]], g.get_nodes()[e[1]], e[2]))
 
-g.create_adj_matrix()
+#g.create_adj_matrix()
 
 # print g
-# print g.get_adj_matrix()
+print g.get_adj_matrix()
 
 connex, weight = kruskal(g)
 

@@ -23,6 +23,7 @@ class Graph(object):
     def add_edge(self, edge):
         "Ajoute une arête au graphe."
         self.__edges.append(edge)
+        self.__add_item_adj_matrix(edge)
 
     def get_name(self):
         "Donne le nom du graphe."
@@ -52,19 +53,22 @@ class Graph(object):
         "Donne le nombre d'arêtes du graphe."
         return len(self.__edges)
 
+    def __add_item_adj_matrix(self, edge):
+        " Ajoute une arête dans la matrice d'adjacence"
+        if self.__adjMatrix is None:
+            self.__adjMatrix = np.zeros((self.get_nb_nodes(), self.get_nb_nodes()))
+
+        start = edge.get_start().get_id() - 1
+        end = edge.get_end().get_id() - 1
+        self.__adjMatrix[start][end] = 1
+        if not self.get_oriented():
+            self.__adjMatrix[end][start] = 1
+
     def create_adj_matrix(self):
         "Crée la matrice d'adjacence lorsque le graphe est terminé"
-        if self.__adjMatrix is not None:
-            # Déja crée
-            return
-
-        self.__adjMatrix = np.zeros((self.get_nb_nodes(), self.get_nb_nodes()))
         for edge in self.get_edges():
-            start = edge.get_start().get_id() - 1
-            end = edge.get_end().get_id() - 1
-            self.__adjMatrix[start][end] = 1
-            if not self.get_oriented():
-                self.__adjMatrix[end][start] = 1
+            self.__add_item_adj_matrix(edge)
+
 
     def plot_graph(self, connex=None, title=None):
         """
