@@ -2,7 +2,7 @@ import read_stsp
 from graph import Graph
 from node import Node
 from edge import Edge
-from kruskal import kruskal
+from algoMST import kruskal
 
 import sys
 

@@ -36,3 +36,7 @@ def kruskal(g):
             # Union des 2 ensembles
             uf.union(start, end)
     return A, weight
+
+# Algorithme de Prim
+def prim(g):
+    return

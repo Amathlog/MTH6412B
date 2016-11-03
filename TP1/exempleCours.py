@@ -5,7 +5,7 @@
 from graph import Graph
 from node import Node
 from edge import Edge
-from kruskal import kruskal
+from algoMST import kruskal
 
 g = Graph('Exemple Cours')
 

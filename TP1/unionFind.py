@@ -11,7 +11,7 @@ class UnionFind(object):
         self.__rang[item] = 0
 
     def find(self, item):
-        """ Compression des chemins. Le parent de chaque noeud de l'ensemble
+        """ Compression des chemins. Le parent de chaque noeud de l'arbre
         est la racine de l'arbre"""
         if self.__parent[item] != item:
             self.__parent[item] = self.find(self.__parent[item])
