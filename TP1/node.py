@@ -30,9 +30,11 @@ class Node(object):
         name = self.get_name()
         data = self.get_data()
         s  = 'Noeud %s (id %d)' % (name, id)
-        s += ' (donnees: ' + repr(data) + ')'
+        #s += ' (donnees: ' + repr(data) + ')'
         return s
 
+    def __eq__(self, other):
+        return self.get_id() == other.get_id()
 
 if __name__ == '__main__':
 

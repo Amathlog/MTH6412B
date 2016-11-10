@@ -5,7 +5,7 @@
 from graph import Graph
 from node import Node
 from edge import Edge
-from algoMST import kruskal
+from algoMST import kruskal, prim
 
 g = Graph('Exemple Cours')
 
@@ -43,8 +43,9 @@ for e in edges:
 #g.create_adj_matrix()
 
 # print g
-print g.get_adj_matrix()
+#print g.get_adj_matrix()
 
-connex, weight = kruskal(g)
+# mst, weight = kruskal(g)
+mst, weight = prim(g, g.get_nodes()[0])
 
-g.plot_graph(connex=connex, title='Poids minimum : ' + str(weight))
+g.plot_graph(mst=mst, title='Poids minimum : ' + str(weight))

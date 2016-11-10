@@ -13,7 +13,7 @@ class Graph(object):
         self.__name = name
         self.__nodes = []  # Attribut prive.
         self.__edges = []  # Attribut prive.
-        self.__adjMatrix = None  # Attribut prive.
+        self.__adjMatrix = {}  # Attribut prive.
         self.__oriented = oriented  # Attribut prive.
 
     def add_node(self, node):
@@ -55,27 +55,16 @@ class Graph(object):
 
     def __add_item_adj_matrix(self, edge):
         " Ajoute une arête dans la matrice d'adjacence"
-        if self.__adjMatrix is None:
-            self.__adjMatrix = np.zeros((self.get_nb_nodes(), self.get_nb_nodes()))
-
-        start = edge.get_start().get_id() - 1
-        end = edge.get_end().get_id() - 1
-        self.__adjMatrix[start][end] = 1
+        start = edge.get_start()
+        end = edge.get_end()
+        self.__adjMatrix[(start, end)] = edge
         if not self.get_oriented():
-            self.__adjMatrix[end][start] = 1
+            self.__adjMatrix[(end, start)] = edge
 
-    def create_adj_matrix(self):
-        "Crée la matrice d'adjacence lorsque le graphe est terminé"
-        for edge in self.get_edges():
-            self.__add_item_adj_matrix(edge)
-
-
-    def plot_graph(self, connex=None, title=None):
+    def plot_graph(self, mst=None, title=None):
         """
         Plot le graphe
-        @param connex : Matrice d'ajacence de MÊME TAILLE que le graphe
-                        Permet de rajouter une composante connexe sur le plot
-                        Utile pour plot l'arbre de recouvrement donné par Kruskal
+        @param mst   :  Arbre de poids minimum à rajouter au plot
         @param title : Titre du plot, en string
         """
 
@@ -108,10 +97,9 @@ class Graph(object):
         ax.set_ylim(min(y) - 10, max(y) + 10)
 
         # Composante connexe en plus à tracer...
-        if connex is not None:
-            edge_pos_bis = np.asarray([((x[start], y[start]), (x[end], y[end]))
-                                       for start in range(self.get_nb_nodes()) for end in range(self.get_nb_nodes())
-                                       if connex[start][end] == 1])
+        if mst is not None:
+            edge_pos_bis = np.asarray([((x[e.get_start().get_id()], y[e.get_start().get_id()]),
+                                (x[e.get_end().get_id()], y[e.get_end().get_id()])) for e in mst.get_edges()])
             edge_collection_bis = LineCollection(edge_pos_bis, linewidth=1.5, antialiased=True,
                                              colors=(0, 0, 0), alpha=1, zorder=0)
             ax.add_collection(edge_collection_bis)
