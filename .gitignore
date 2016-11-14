@@ -90,3 +90,6 @@ ENV/
 
 # PyCharm
 .idea
+
+# Test
+TP1/test.py
