@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 
-""" Hard code l'exemple du cours pour tester l'algorithme de Kruskal """
-
+""" Hard code l'exemple du cours pour tester l'algorithme de Kruskal et Prim
+Argument 1 :   0 = Kruskal 
+               1 = Prim (défaut)
+"""
+import sys
 from graph import Graph
 from node import Node
 from edge import Edge
 from algoMST import kruskal, prim
+
+kruskal_activated = False
+if len(sys.argv) > 1:
+   kruskal_activated = (sys.argv[1] == "0")
 
 g = Graph('Exemple Cours')
 
@@ -45,7 +52,11 @@ for e in edges:
 # print g
 #print g.get_adj_matrix()
 
-# mst, weight = kruskal(g)
-mst, weight = prim(g, g.get_nodes()[0])
+if kruskal_activated:
+   mst, weight = kruskal(g)
+   text = " (kruskal)"
+else:
+   mst, weight = prim(g, g.get_nodes()[0])
+   text = " (prim)"
 
-g.plot_graph(mst=mst, title='Poids minimum : ' + str(weight))
+g.plot_graph(mst=mst, title='Poids minimum : ' + str(weight) + text)

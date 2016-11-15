@@ -1,12 +1,23 @@
+# -*- coding: utf-8 -*-
+
+""" Argument 1 : Nom du fichier stsp à parser et utiliser
+    Argument 2 : 0 = Kruskal 
+                 1 = Prim (défaut)
+"""
+
 import read_stsp
 from graph import Graph
 from node import Node
 from edge import Edge
-from algoMST import kruskal
+from algoMST import kruskal, prim
 
 import sys
 
 finstance = sys.argv[1]
+
+kruskal_activated = False
+if len(sys.argv) > 2:
+   kruskal_activated = (sys.argv[2] == "0")
 
 with open(finstance, "r") as fd:
 
@@ -52,7 +63,12 @@ with open(finstance, "r") as fd:
     # print g
     # print g.get_adj_matrix()
 
-    connex, weight = kruskal(g)
+    if kruskal_activated:
+        mst, weight = kruskal(g)
+        text = " (kruskal)"
+    else:
+        mst, weight = prim(g, g.get_nodes()[0])
+        text = " (prim)"
 
-    g.plot_graph(connex=connex, title='Poids minimum : ' + str(weight))
+    g.plot_graph(mst=mst, title='Poids minimum : ' + str(weight) + text)
 

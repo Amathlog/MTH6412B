@@ -60,7 +60,7 @@ def prim(g, source):
         ancestors[node] = None
         # On pousse dans la file de priorité
         priorityQ.enqueue(node, cost)
-    # Tant que le heap n'est pas vide (ie. il reste des sommets à joindre)
+    # Tant que la file n'est pas vide (ie. il reste des sommets à joindre)
     while len(priorityQ) != 0:
         # On récupère celui avec la priorité la plus faible
         curr = priorityQ.dequeue()
