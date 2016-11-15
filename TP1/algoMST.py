@@ -2,7 +2,7 @@
 
 import numpy as np
 import sys
-from heapq import heappush, heappop
+from priorityQueue import PriorityQueue
 from unionFind import UnionFind
 from MST import MST
 
@@ -41,50 +41,44 @@ def kruskal(g):
 
 # Algorithme de Prim
 def prim(g, source):
-	F = []
-	trace = {}
-	A = MST(g)
-	weight = 0
-	for node in g.get_nodes():
-		cost = sys.maxsize
-		if node == source:
-			cost = 0
-		trace[node] = [cost, None, node]
-		heappush(F, trace[node])
-	while len(F) != 0:
-		curr = heappop(F)
-		print "Curr = ", curr[-1]
-		node_min = None
-		for neighboor in [value[-1] for value in F if (curr[-1], value[-1]) in g.get_adj_matrix()]:
-			min = sys.maxsize
-			if trace[neighboor][0] > g.get_adj_matrix()[(curr[-1], neighboor)].get_weight():
-				trace[neighboor][0] = g.get_adj_matrix()[(curr[-1], neighboor)].get_weight()
-				trace[neighboor][1] = curr[-1]
-				if trace[neighboor][0] < min:
-					min = trace[neighboor][0]
-					node_min = neighboor
-		if node_min is None:
-			node_min = curr[1]
-		A.add_edge(g.get_adj_matrix()[(curr[-1], node_min)])
-		weight += g.get_adj_matrix()[(curr[-1], node_min)].get_weight()
+    # File de priorité
+    priorityQ = PriorityQueue()
+    # Garde trace des parents pour chaque noeud
+    ancestors = {}
+    # Arbre de poids minimum
+    A = MST(g)
+    # Poids de l'arbre minimum
+    weight = 0
+    # Initialisation pour tous les noeuds
+    for node in g.get_nodes():
+        # côut inital = +∞
+        # coût source = 0
+        cost = sys.maxsize
+        if node == source:
+        	cost = 0
+        # parent initial = None
+        ancestors[node] = None
+        # On pousse dans la file de priorité
+        priorityQ.enqueue(node, cost)
+    # Tant que le heap n'est pas vide (ie. il reste des sommets à joindre)
+    while len(priorityQ) != 0:
+        # On récupère celui avec la priorité la plus faible
+        curr = priorityQ.dequeue()
+        # On récupère la liste de ses voisins qu'ils restent encore à connecter (ie. qui sont encore dans la file)
+        for neighboor in [value for value in priorityQ.get_list_items() if (curr, value) in g.get_adj_matrix()]:
+            # Si le coût de ce noeud est plus élevé que le coût de l'arc
+            if(priorityQ.get_priority(neighboor) > g.get_adj_matrix()[(curr, neighboor)].get_weight()):
+                # On change le coût dans la file de ce noeud
+                priorityQ.change_priority(neighboor, g.get_adj_matrix()[(curr, neighboor)].get_weight())
+                # Curr devient le nouveau parent de neighboor
+                ancestors[neighboor] = curr
 
-		F.sort()
-		print '\n'
-		print F, '\n'
-	return A, weight
+    # Lorsqu'on a la liste de tous les parents, on crée le graphe à partir de g
+    for node in g.get_nodes():
+        # Seul le noeud source n'a pas de parent
+        if node == source:
+            continue
+        A.add_edge(g.get_adj_matrix()[(node, ancestors[node])])
+        weight += g.get_adj_matrix()[(node, ancestors[node])].get_weight()
 
-
-	# pour tout sommet t
-	# 	cout[t] := +∞
-	# 	pred[t] := nil
-	# cout[s] := 0
-	# F := file de priorité contenant les sommets de G avec cout[.] comme priorité
-	# tant que F ≠ vide
-	#     t := F.defiler
-	#     pour toute arête t--u
-	#         si cout[u] > poids(t--u)
-	#                cout[u] := poids(t--u)
-	#                pred[u] := t
-	#                F.notifierDiminution(u)
-	                
-	# retourner pred
+    return A, weight
