@@ -53,10 +53,10 @@ for e in edges:
 #print g.get_adj_matrix()
 
 if kruskal_activated:
-   mst, weight = kruskal(g)
+   mst = kruskal(g)
    text = " (kruskal)"
 else:
-   mst, weight = prim(g, g.get_nodes()[0])
+   mst = prim(g, g.get_nodes()[0])
    text = " (prim)"
 
-g.plot_graph(mst=mst, title='Poids minimum : ' + str(weight) + text)
+g.plot_graph(mst=mst, title='Poids minimum : ' + str(mst.get_weight()) + text)

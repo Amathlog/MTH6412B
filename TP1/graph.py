@@ -61,7 +61,7 @@ class Graph(object):
         if not self.get_oriented():
             self.__adjMatrix[(end, start)] = edge
 
-    def plot_graph(self, mst=None, title=None):
+    def plot_graph(self, mst=None, title=None, block = True):
         """
         Plot le graphe
         @param mst   :  Arbre de poids minimum à rajouter au plot
@@ -104,7 +104,7 @@ class Graph(object):
                                              colors=(0, 0, 0), alpha=1, zorder=0)
             ax.add_collection(edge_collection_bis)
 
-        plt.show()
+        plt.show(block=block)
         return
 
     def __repr__(self):

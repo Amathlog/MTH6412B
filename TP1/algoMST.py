@@ -8,9 +8,6 @@ from MST import MST
 
 # Algorithme de Kruskal
 def kruskal(g):
-    # Initialise le poids total à 0
-    weight = 0
-
     # Initialise la structure d'Union Find
     uf = UnionFind()
 
@@ -34,10 +31,9 @@ def kruskal(g):
         if uf.find(start) != uf.find(end):
             # Ajoute cette arête à arbre. Il n'est pas orienté, on le fait aussi pour son transposé
             A.add_edge(edge)
-            weight += edge.get_weight()
             # Union des 2 ensembles
             uf.union(start, end)
-    return A, weight
+    return A
 
 # Algorithme de Prim
 def prim(g, source):
@@ -47,8 +43,6 @@ def prim(g, source):
     ancestors = {}
     # Arbre de poids minimum
     A = MST(g)
-    # Poids de l'arbre minimum
-    weight = 0
     # Initialisation pour tous les noeuds
     for node in g.get_nodes():
         # côut inital = +∞
@@ -64,7 +58,7 @@ def prim(g, source):
     while len(priorityQ) != 0:
         # On récupère celui avec la priorité la plus faible
         curr = priorityQ.dequeue()
-        # On récupère la liste de ses voisins qu'ils restent encore à connecter (ie. qui sont encore dans la file)
+        # On récupère la liste de ses voisins qui restent encore à connecter (ie. qui sont encore dans la file)
         for neighboor in [value for value in priorityQ.get_list_items() if (curr, value) in g.get_adj_matrix()]:
             # Si le coût de ce noeud est plus élevé que le coût de l'arc
             if(priorityQ.get_priority(neighboor) > g.get_adj_matrix()[(curr, neighboor)].get_weight()):
@@ -79,6 +73,5 @@ def prim(g, source):
         if node == source:
             continue
         A.add_edge(g.get_adj_matrix()[(node, ancestors[node])])
-        weight += g.get_adj_matrix()[(node, ancestors[node])].get_weight()
 
-    return A, weight
+    return A

@@ -76,9 +76,9 @@ class PriorityQueue(object):
         max = self.__length - 1
         i = -1
         while max >= min:
-            curr = (max - min) / 2 + min
+            curr = (max + min) / 2
             if priority == self.__list[curr][0]:
-                return i
+                return curr
             elif priority < self.__list[curr][0]:
                 max = curr - 1
             else:
