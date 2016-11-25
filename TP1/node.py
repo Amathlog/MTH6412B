@@ -5,13 +5,10 @@ class Node(object):
     Une classe générique pour représenter les noeuds d'un graphe.
     """
 
-    __node_count = -1   # Compteur global partage par toutes les instances.
-
     def __init__(self, name='Sans nom', data=None):
         self.__name = name
         self.__data = data
-        Node.__node_count += 1
-        self.__id = Node.__node_count
+        self.__id = None
 
     def get_name(self):
         "Donne le nom du noeud."
@@ -20,6 +17,10 @@ class Node(object):
     def get_id(self):
         "Donne le numéro d'identification du noeud."
         return self.__id
+
+    def set_id(self, id):
+        "Associe le numéro d'identification du noeud"
+        self.__id = id
 
     def get_data(self):
         "Donne les données contenues dans le noeud."

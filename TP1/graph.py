@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from math import cos, sin, pi
+from node import Node
 
 
 class Graph(object):
@@ -16,8 +17,13 @@ class Graph(object):
         self.__adjMatrix = {}  # Attribut prive.
         self.__oriented = oriented  # Attribut prive.
 
+        # Reset le compteur de noeud à chaque nouveau graphe
+        self.__nodeCount = -1
+
     def add_node(self, node):
         "Ajoute un noeud au graphe."
+        self.__nodeCount += 1
+        node.set_id(self.__nodeCount)
         self.__nodes.append(node)
 
     def add_edge(self, edge):
@@ -61,11 +67,14 @@ class Graph(object):
         if not self.get_oriented():
             self.__adjMatrix[(end, start)] = edge
 
-    def plot_graph(self, mst=None, title=None, block = True):
+    def plot_graph(self, mst=None, title=None, block = True, show = True, filename = None):
         """
         Plot le graphe
-        @param mst   :  Arbre de poids minimum à rajouter au plot
-        @param title : Titre du plot, en string
+        @param mst      : Arbre de poids minimum à rajouter au plot
+        @param title    : Titre du plot, en string
+        @param block    : Est ce que l'affichage bloque le programme ? True par défaut
+        @param show     : Le graph doit-il être affiché ou enregistré ? True par défaut
+        @param filename : Nom du fichier si on veut enregistrer
         """
 
         import matplotlib.pyplot as plt
@@ -76,6 +85,9 @@ class Graph(object):
         if title is not None:
             fig.suptitle(title, fontsize=14, fontweight='bold')
 
+        x = []
+        y = []
+
         if self.get_nodes()[0].get_data() is not None:
             # Plot les noeuds.
             x = [node.get_data()[0] for node in self.get_nodes()]
@@ -85,6 +97,7 @@ class Graph(object):
             rayon = 100
             x = [rayon * cos((node.get_id()) * 2 * pi / self.get_nb_nodes()) for node in self.get_nodes()]
             y = [rayon * sin((node.get_id()) * 2 * pi / self.get_nb_nodes()) for node in self.get_nodes()]
+
 
         # Plot les arêtes.
         edge_pos = np.asarray([((x[e.get_start().get_id()], y[e.get_start().get_id()]),
@@ -103,8 +116,10 @@ class Graph(object):
             edge_collection_bis = LineCollection(edge_pos_bis, linewidth=1.5, antialiased=True,
                                              colors=(0, 0, 0), alpha=1, zorder=0)
             ax.add_collection(edge_collection_bis)
-
-        plt.show(block=block)
+        if show:
+            plt.show(block=block)
+        else:
+            plt.savefig(filename+".png", format = "png")
         return
 
     def __repr__(self):

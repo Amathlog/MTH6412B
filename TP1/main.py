@@ -73,15 +73,17 @@ with open(finstance, "r") as fd:
 
     # g.plot_graph(mst=mst, title='Poids minimum : ' + str(mst.get_weight()) + text)
 
-    min = 2*[sys.maxsize]
+    # min = 2*[sys.maxsize]
     travel = [None, None]
-    for i in range(2):
-        for node in g.get_nodes():
-            aux = solveTSP(g, node, i==0)
-            if(aux.get_weight() < min):
-                travel[i] = aux
-                min[i] = aux.get_weight()
+    # for i in range(2):
+    #     for node in g.get_nodes():
+    #         aux = solveTSP(g, node, i==0)
+    #         if(aux.get_weight() < min):
+    #             travel[i] = aux
+    #             min[i] = aux.get_weight()
 
+    travel[0] = solveTSP(g, g.get_nodes()[0], True)
+    travel[1] = solveTSP(g, g.get_nodes()[0], False)
     g.plot_graph(mst=travel[0], title='Travel minimum(prim) : ' + str(travel[0].get_weight()), block = False)
     g.plot_graph(mst=travel[1], title='Travel minimum(kruskal) : ' + str(travel[1].get_weight()))
 
